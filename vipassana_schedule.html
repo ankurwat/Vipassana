@@ -1,549 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dhamma Vaddhana — 2026 Course Schedule</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2026 California Vipassana Course Schedule</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Georgia', serif;
-      background: #fdf8f3;
-      color: #3a2e24;
-      min-height: 100vh;
-    }
+body {
+font-family: 'Georgia', serif;
+background: #fdf8f3;
+color: #3a2e24;
+min-height: 100vh;
+}
 
-    header {
-      background: linear-gradient(135deg, #e8864a 0%, #d4693a 100%);
-      color: white;
-      padding: 48px 32px 40px;
-      text-align: center;
-    }
+header {
+background: linear-gradient(135deg, #e8864a 0%, #d4693a 100%);
+color: white;
+padding: 48px 32px 40px;
+text-align: center;
+}
 
-    header .subtitle {
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: 0.8rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      opacity: 0.85;
-      margin-bottom: 10px;
-    }
+header .subtitle {
+font-family: 'Helvetica Neue', sans-serif;
+font-size: 0.8rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+opacity: 0.85;
+margin-bottom: 10px;
+}
 
-    header h1 {
-      font-size: 2rem;
-      font-weight: normal;
-      letter-spacing: 0.02em;
-      margin-bottom: 8px;
-    }
+header h1 {
+font-size: 2rem;
+font-weight: normal;
+letter-spacing: 0.02em;
+margin-bottom: 8px;
+}
 
-    header .tagline {
-      font-style: italic;
-      opacity: 0.8;
-      font-size: 0.95rem;
-    }
+header .tagline {
+font-style: italic;
+opacity: 0.8;
+font-size: 0.95rem;
+}
 
-    .last-checked {
-      background: #fff3e8;
-      border-left: 4px solid #e8864a;
-      padding: 10px 20px;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: 0.82rem;
-      color: #8a6040;
-      text-align: center;
-    }
+.last-checked {
+background: #fff3e8;
+border-left: 4px solid #e8864a;
+padding: 10px 20px;
+font-family: 'Helvetica Neue', sans-serif;
+font-size: 0.82rem;
+color: #8a6040;
+text-align: center;
+}
 
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 24px 64px;
-    }
+main {
+max-width: 1100px;
+margin: 0 auto;
+padding: 40px 24px 64px;
+}
 
-    section {
-      margin-bottom: 52px;
-    }
+section {
+margin-bottom: 52px;
+}
 
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
+.section-header {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 20px;
+}
 
-    .section-header h2 {
-      font-size: 1.2rem;
-      font-weight: normal;
-      color: #c4622e;
-      letter-spacing: 0.01em;
-    }
+.section-header h2 {
+font-size: 1.2rem;
+font-weight: normal;
+color: #c4622e;
+letter-spacing: 0.01em;
+}
 
-    .section-header .pill {
-      background: #e8864a;
-      color: white;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 3px 10px;
-      border-radius: 20px;
-    }
+.section-header .pill {
+background: #e8864a;
+color: white;
+font-family: 'Helvetica Neue', sans-serif;
+font-size: 0.72rem;
+font-weight: 600;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+padding: 3px 10px;
+border-radius: 20px;
+}
 
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, #e8864a44, transparent);
-      margin-bottom: 20px;
-    }
+.divider {
+height: 1px;
+background: linear-gradient(to right, #e8864a44, transparent);
+margin-bottom: 20px;
+}
 
-    .table-wrap {
-      overflow-x: auto;
-      border-radius: 10px;
-      box-shadow: 0 2px 16px rgba(200,100,40,0.08);
-    }
+.table-wrap {
+overflow-x: auto;
+border-radius: 10px;
+box-shadow: 0 2px 16px rgba(200,100,40,0.08);
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 0.875rem;
-    }
+table {
+width: 100%;
+border-collapse: collapse;
+background: white;
+font-family: 'Helvetica Neue', Arial, sans-serif;
+font-size: 0.875rem;
+}
 
-    thead tr {
-      background: #3a2e24;
-      color: #f5dfc8;
-    }
+thead tr {
+background: #3a2e24;
+color: #f5dfc8;
+}
 
-    thead th {
-      padding: 13px 16px;
-      text-align: left;
-      font-weight: 600;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
+thead th {
+padding: 13px 16px;
+text-align: left;
+font-weight: 600;
+font-size: 0.75rem;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+white-space: nowrap;
+}
 
-    tbody tr {
-      border-bottom: 1px solid #f0e6da;
-      transition: background 0.15s;
-    }
+tbody tr {
+border-bottom: 1px solid #f0e6da;
+transition: background 0.15s;
+}
 
-    tbody tr:last-child { border-bottom: none; }
+tbody tr:last-child { border-bottom: none; }
 
-    tbody tr:hover { background: #fff8f2; }
+tbody tr:hover { background: #fff8f2; }
 
-    tbody tr.alt { background: #fdfaf7; }
-    tbody tr.alt:hover { background: #fff8f2; }
+tbody tr.alt { background: #fdfaf7; }
+tbody tr.alt:hover { background: #fff8f2; }
 
-    td {
-      padding: 12px 16px;
-      vertical-align: top;
-      line-height: 1.5;
-    }
+td {
+padding: 12px 16px;
+vertical-align: top;
+line-height: 1.5;
+}
 
-    td.date {
-      white-space: nowrap;
-      font-weight: 600;
-      color: #c4622e;
-      min-width: 130px;
-    }
+td.date {
+white-space: nowrap;
+font-weight: 600;
+color: #c4622e;
+min-width: 130px;
+}
 
-    td.type { min-width: 140px; }
+td.type { min-width: 140px; }
 
-    td.status {
-      min-width: 180px;
-      color: #5a4a3a;
-    }
+td.status {
+min-width: 180px;
+color: #5a4a3a;
+}
 
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      margin: 1px 2px 1px 0;
-      white-space: nowrap;
-    }
+.badge {
+display: inline-block;
+padding: 2px 8px;
+border-radius: 4px;
+font-size: 0.72rem;
+font-weight: 600;
+margin: 1px 2px 1px 0;
+white-space: nowrap;
+}
 
-    .badge-open    { background: #e6f4ea; color: #2d7a45; }
-    .badge-closed  { background: #fde8e8; color: #b03030; }
-    .badge-waitlist { background: #fff3cd; color: #856404; }
-    .badge-progress { background: #e8f0fe; color: #2255cc; }
-    .badge-future  { background: #f0ebe5; color: #7a6050; }
+.badge-open { background: #e6f4ea; color: #2d7a45; }
+.badge-closed { background: #fde8e8; color: #b03030; }
+.badge-waitlist { background: #fff3cd; color: #856404; }
+.badge-progress { background: #e8f0fe; color: #2255cc; }
+.badge-future { background: #f0ebe5; color: #7a6050; }
 
-    td.location a {
-      color: #c4622e;
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px dotted #e8864a;
-    }
-    td.location a:hover { color: #e8864a; border-bottom-color: transparent; }
+td.location a {
+color: #c4622e;
+text-decoration: none;
+font-weight: 500;
+border-bottom: 1px dotted #e8864a;
+}
+td.location a:hover { color: #e8864a; border-bottom-color: transparent; }
 
-    td.comments {
-      color: #6a5848;
-      font-size: 0.82rem;
-      max-width: 260px;
-    }
+td.comments {
+color: #6a5848;
+font-size: 0.82rem;
+max-width: 260px;
+}
 
-    .note {
-      margin-top: 28px;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: 0.8rem;
-      color: #a08060;
-      font-style: italic;
-      text-align: center;
-    }
+.note {
+margin-top: 28px;
+font-family: 'Helvetica Neue', sans-serif;
+font-size: 0.8rem;
+color: #a08060;
+font-style: italic;
+text-align: center;
+}
 
-    footer {
-      text-align: center;
-      padding: 24px;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: 0.78rem;
-      color: #b09070;
-      border-top: 1px solid #edd8c0;
-    }
+footer {
+text-align: center;
+padding: 24px;
+font-family: 'Helvetica Neue', sans-serif;
+font-size: 0.78rem;
+color: #b09070;
+border-top: 1px solid #edd8c0;
+}
 
-    footer a { color: #c4622e; text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
-  </style>
+footer a { color: #c4622e; text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+</style>
 </head>
 <body>
 
 <header>
-  <div class="subtitle">Southern California Vipassana Center</div>
-  <h1>Dhamma Vaddhana — 2026 Course Schedule</h1>
-  <div class="tagline">Vipassana Meditation as taught by S.N. Goenka</div>
+<div class="subtitle">California Vipassana Centers</div>
+<h1>2026 Course Schedule</h1>
+<div class="tagline">Vipassana Meditation as taught by S.N. Goenka</div>
 </header>
 
-<div class="last-checked">Last updated: June 3, 2026 &nbsp;·&nbsp; Source: <a href="https://www.dhamma.org/en-US/schedules/schvaddhana" style="color:#c4622e;">dhamma.org</a></div>
+<div class="last-checked">Last updated: June 3, 2026 &nbsp;·&nbsp; Sources: <a href="https://www.dhamma.org/en-US/schedules/schvaddhana" style="color:#c4622e;">Dhamma Vaddhana</a> &nbsp;·&nbsp; <a href="https://www.dhamma.org/en-US/schedules/schmanda" style="color:#c4622e;">Dhamma Maṇḍa</a> &nbsp;·&nbsp; <a href="https://www.dhamma.org/en-US/schedules/schmahavana" style="color:#c4622e;">Dhamma Mahāvana</a></div>
 
 <main>
 
-  <!-- ADULT COURSES -->
-  <section>
-    <div class="section-header">
-      <h2>Ten-Day &amp; Other Adult Courses</h2>
-      <span class="pill">Center</span>
-    </div>
-    <div class="divider"></div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Course Date</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Location</th>
-            <th>Comments</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="date">May 27 – Jun 07</td>
-            <td class="type">10-Day</td>
-            <td class="status"><span class="badge badge-progress">In Progress</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">NEED MALE SERVERS</td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Jun 07 – Jun 10</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-open">Servers – Open</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Jun 10 – Jun 21</td>
-            <td class="type">10-Day</td>
-            <td class="status">
-              <span class="badge badge-closed">Women – Closed</span>
-              <span class="badge badge-waitlist">Men – Wait List</span>
-              <span class="badge badge-waitlist">Servers Women – Wait List</span>
-              <span class="badge badge-open">Servers Men – Open</span>
-            </td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">NEED SERVERS</td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Jun 21 – Jun 24</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-open">Servers – Open</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Jun 24 – Jul 05</td>
-            <td class="type">10-Day</td>
-            <td class="status">
-              <span class="badge badge-closed">Women – Closed</span>
-              <span class="badge badge-waitlist">Men – Wait List</span>
-              <span class="badge badge-open">Servers – Open</span>
-            </td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Jul 05 – Jul 08</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-open">Servers – Open</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Jul 08 – Jul 19</td>
-            <td class="type">10-Day</td>
-            <td class="status">
-              <span class="badge badge-closed">Women – Closed</span>
-              <span class="badge badge-waitlist">Men – Wait List</span>
-              <span class="badge badge-open">Servers – Open</span>
-            </td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Jul 19 – Jul 22</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-open">Servers – Open</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Jul 22 – Aug 02</td>
-            <td class="type">10-Day</td>
-            <td class="status">
-              <span class="badge badge-closed">Women – Closed</span>
-              <span class="badge badge-waitlist">Men – Wait List</span>
-              <span class="badge badge-open">Servers – Open</span>
-            </td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Aug 02 – Aug 05</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-open">Servers – Open</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Aug 05 – Aug 16</td>
-            <td class="type">10-Day</td>
-            <td class="status"><span class="badge badge-future">Opens Jun 05</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Aug 16 – Aug 19</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-open">Servers – Open</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Aug 19 – Aug 30</td>
-            <td class="type">10-Day</td>
-            <td class="status"><span class="badge badge-future">Opens Jun 19</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Aug 30 – Sep 02</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-open">Servers – Open</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Sep 02 – Sep 13</td>
-            <td class="type">10-Day</td>
-            <td class="status"><span class="badge badge-future">Opens Jul 02</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Sep 13 – Sep 16</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-future">Opens Jul 17</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Sep 16 – Sep 20</td>
-            <td class="type">3-Day</td>
-            <td class="status"><span class="badge badge-future">Opens Jul 16</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students who have sat at least one 10-day course</td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Sep 20 – Sep 23</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-future">Opens Jul 24</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Sep 23 – Oct 04</td>
-            <td class="type">10-Day</td>
-            <td class="status"><span class="badge badge-future">Opens Jul 24</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Oct 04 – Oct 07</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-future">Opens Aug 07</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Oct 07 – Oct 18</td>
-            <td class="type">10-Day</td>
-            <td class="status"><span class="badge badge-future">Opens Aug 07</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Oct 18 – Oct 23</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-future">Opens Aug 18</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">Longer service period to maintain the Center and help prepare for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Oct 21 – Oct 30</td>
-            <td class="type">Satipatthana Sutta</td>
-            <td class="status"><span class="badge badge-future">Opens Jul 21</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">Starts Wednesday, ends Friday. See Old Student Course Qualification Requirements</td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Nov 01 – Nov 04</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-future">Opens Sep 01</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Nov 04 – Nov 15</td>
-            <td class="type">10-Day (English / Khmer)</td>
-            <td class="status"><span class="badge badge-future">Opens Sep 04</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">Priority given to Khmer-speaking students</td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Nov 16 – Nov 18</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-future">Opens Aug 18</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Nov 18 – Nov 29</td>
-            <td class="type">10-Day</td>
-            <td class="status"><span class="badge badge-future">Opens Sep 18</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Nov 29 – Dec 02</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-future">Opens Sep 29</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Dec 02 – Dec 13</td>
-            <td class="type">10-Day</td>
-            <td class="status"><span class="badge badge-future">Opens Oct 02</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Dec 13 – Dec 16</td>
-            <td class="type">Service Period</td>
-            <td class="status"><span class="badge badge-future">Opens Oct 13</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments">For old students. To help prepare the Center for the next course</td>
-          </tr>
-          <tr>
-            <td class="date">Dec 16 – Dec 27</td>
-            <td class="type">10-Day</td>
-            <td class="status"><span class="badge badge-future">Opens Oct 16</span></td>
-            <td class="location"><a href="http://vaddhana.dhamma.org" target="_blank">Twentynine Palms</a></td>
-            <td class="comments"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- NON-CENTER COURSES -->
-  <section>
-    <div class="section-header">
-      <h2>Non-Center Courses</h2>
-      <span class="pill">Off-site</span>
-    </div>
-    <div class="divider"></div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Course Date</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Location</th>
-            <th>Comments</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="date">Jun 13</td>
-            <td class="type">One Day Course (Old Students Only)</td>
-            <td class="status">
-              <span class="badge badge-closed">New Women – Closed</span>
-              <span class="badge badge-closed">New Men – Closed</span>
-              <span class="badge badge-open">Old Women – Open</span>
-              <span class="badge badge-open">Old Men – Open</span>
-              <span class="badge badge-open">Servers – Open</span>
-            </td>
-            <td class="location"><a href="https://www.dhamma.org/en-US/schedules/schvaddhana" target="_blank">Pico Rivera, CA</a></td>
-            <td class="comments">Registration: One Day Course Pico Rivera</td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Aug 15</td>
-            <td class="type">One Day Course (Old Students Only)</td>
-            <td class="status"><span class="badge badge-future">Opens Jul 15</span></td>
-            <td class="location"><a href="https://www.dhamma.org/en-US/schedules/schvaddhana" target="_blank">Pico Rivera, CA</a></td>
-            <td class="comments">Registration link available one month prior</td>
-          </tr>
-          <tr>
-            <td class="date">Oct 10</td>
-            <td class="type">One Day Course (Old Students Only)</td>
-            <td class="status"><span class="badge badge-future">Opens Sep 10</span></td>
-            <td class="location"><a href="https://www.dhamma.org/en-US/schedules/schvaddhana" target="_blank">Pico Rivera, CA</a></td>
-            <td class="comments">Registration link available one month prior</td>
-          </tr>
-          <tr class="alt">
-            <td class="date">Dec 12</td>
-            <td class="type">One Day Course (Old Students Only)</td>
-            <td class="status"><span class="badge badge-future">Opens Nov 12</span></td>
-            <td class="location"><a href="https://www.dhamma.org/en-US/schedules/schvaddhana" target="_blank">Pico Rivera, CA</a></td>
-            <td class="comments">Registration link available one month prior</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <p class="note">Children's/Teenagers' courses and the Annual Board of Trustees Meeting are excluded from this view.</p>
-
+<!-- ADULT COURSES -->
+<section>
+<div class="section-header">
+<h2>Ten-Day &amp; Other Adult Courses</h2>
+<span class="pill">Center</span>
+</div>
+<div class="divider"></div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Course Date</th>
+<th>Type</th>
+<th>Status</th>
+<th>Location</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
 </main>
-
-<footer>
-  Data sourced from <a href="https://www.dhamma.org/en-US/schedules/schvaddhana" target="_blank">dhamma.org</a> &nbsp;·&nbsp;
-  <a href="http://vaddhana.dhamma.org" target="_blank">Dhamma Vaddhana Center Website</a>
-</footer>
-
 </body>
 </html>
