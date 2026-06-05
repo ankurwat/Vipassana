@@ -3,207 +3,49 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>2026 California Vipassana Course Schedule</title>
+<title>California Vipassana Course Schedule</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-font-family: 'Georgia', serif;
-background: #fdf8f3;
-color: #3a2e24;
-min-height: 100vh;
-}
-
-header {
-background: linear-gradient(135deg, #e8864a 0%, #d4693a 100%);
-color: white;
-padding: 48px 32px 40px;
-text-align: center;
-}
-
-header .subtitle {
-font-family: 'Helvetica Neue', sans-serif;
-font-size: 0.8rem;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-opacity: 0.85;
-margin-bottom: 10px;
-}
-
-header h1 {
-font-size: 2rem;
-font-weight: normal;
-letter-spacing: 0.02em;
-margin-bottom: 8px;
-}
-
-header .tagline {
-font-style: italic;
-opacity: 0.8;
-font-size: 0.95rem;
-}
-
-.last-checked {
-background: #fff3e8;
-border-left: 4px solid #e8864a;
-padding: 10px 20px;
-font-family: 'Helvetica Neue', sans-serif;
-font-size: 0.82rem;
-color: #8a6040;
-text-align: center;
-}
-
-main {
-max-width: 1100px;
-margin: 0 auto;
-padding: 40px 24px 64px;
-}
-
-section {
-margin-bottom: 52px;
-}
-
-.section-header {
-display: flex;
-align-items: center;
-gap: 12px;
-margin-bottom: 20px;
-}
-
-.section-header h2 {
-font-size: 1.2rem;
-font-weight: normal;
-color: #c4622e;
-letter-spacing: 0.01em;
-}
-
-.section-header .pill {
-background: #e8864a;
-color: white;
-font-family: 'Helvetica Neue', sans-serif;
-font-size: 0.72rem;
-font-weight: 600;
-letter-spacing: 0.08em;
-text-transform: uppercase;
-padding: 3px 10px;
-border-radius: 20px;
-}
-
-.divider {
-height: 1px;
-background: linear-gradient(to right, #e8864a44, transparent);
-margin-bottom: 20px;
-}
-
-.table-wrap {
-overflow-x: auto;
-border-radius: 10px;
-box-shadow: 0 2px 16px rgba(200,100,40,0.08);
-}
-
-table {
-width: 100%;
-border-collapse: collapse;
-background: white;
-font-family: 'Helvetica Neue', Arial, sans-serif;
-font-size: 0.875rem;
-}
-
-thead tr {
-background: #3a2e24;
-color: #f5dfc8;
-}
-
-thead th {
-padding: 13px 16px;
-text-align: left;
-font-weight: 600;
-font-size: 0.75rem;
-letter-spacing: 0.08em;
-text-transform: uppercase;
-white-space: nowrap;
-}
-
-tbody tr {
-border-bottom: 1px solid #f0e6da;
-transition: background 0.15s;
-}
-
+body { font-family: 'Georgia', serif; background: #fdf8f3; color: #3a2e24; min-height: 100vh; }
+header { background: linear-gradient(135deg, #e8864a 0%, #d4693a 100%); color: white; padding: 48px 32px 40px; text-align: center; }
+header .subtitle { font-family: 'Helvetica Neue', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.85; margin-bottom: 10px; }
+header h1 { font-size: 2rem; font-weight: normal; letter-spacing: 0.02em; margin-bottom: 8px; }
+header .tagline { font-style: italic; opacity: 0.8; font-size: 0.95rem; }
+.last-checked { background: #fff3e8; border-left: 4px solid #e8864a; padding: 10px 20px; font-family: 'Helvetica Neue', sans-serif; font-size: 0.82rem; color: #8a6040; text-align: center; }
+main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 64px; }
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.section-header h2 { font-size: 1.2rem; font-weight: normal; color: #c4622e; letter-spacing: 0.01em; }
+.section-header .pill { background: #e8864a; color: white; font-family: 'Helvetica Neue', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+.divider { height: 1px; background: linear-gradient(to right, #e8864a44, transparent); margin-bottom: 20px; }
+.table-wrap { overflow-x: auto; border-radius: 10px; box-shadow: 0 2px 16px rgba(200,100,40,0.08); }
+table { width: 100%; border-collapse: collapse; background: white; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.875rem; }
+thead tr { background: #3a2e24; color: #f5dfc8; }
+thead th { padding: 13px 16px; text-align: left; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable:hover { background: #4a3a2c; }
+thead th.sortable::after { content: ' \2195'; opacity: 0.45; font-size: 0.9em; }
+thead th.sort-asc::after  { content: ' \25B2'; opacity: 1; color: #e8864a; }
+thead th.sort-desc::after { content: ' \25BC'; opacity: 1; color: #e8864a; }
+tbody tr { border-bottom: 1px solid #f0e6da; transition: background 0.15s; }
 tbody tr:last-child { border-bottom: none; }
-
 tbody tr:hover { background: #fff8f2; }
-
-tbody tr.alt { background: #fdfaf7; }
-tbody tr.alt:hover { background: #fff8f2; }
-
-td {
-padding: 12px 16px;
-vertical-align: top;
-line-height: 1.5;
-}
-
-td.date {
-white-space: nowrap;
-font-weight: 600;
-color: #c4622e;
-min-width: 130px;
-}
-
+tbody tr:nth-child(even) { background: #fdfaf7; }
+tbody tr:nth-child(even):hover { background: #fff8f2; }
+td { padding: 12px 16px; vertical-align: top; line-height: 1.5; }
+td.date { white-space: nowrap; font-weight: 600; color: #c4622e; min-width: 130px; }
 td.type { min-width: 140px; }
-
-td.status {
-min-width: 180px;
-color: #5a4a3a;
-}
-
-.badge {
-display: inline-block;
-padding: 2px 8px;
-border-radius: 4px;
-font-size: 0.72rem;
-font-weight: 600;
-margin: 1px 2px 1px 0;
-white-space: nowrap;
-}
-
+td.status { min-width: 160px; color: #5a4a3a; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; margin: 1px 2px 1px 0; white-space: nowrap; }
 .badge-open { background: #e6f4ea; color: #2d7a45; }
 .badge-closed { background: #fde8e8; color: #b03030; }
 .badge-waitlist { background: #fff3cd; color: #856404; }
 .badge-progress { background: #e8f0fe; color: #2255cc; }
 .badge-future { background: #f0ebe5; color: #7a6050; }
-
-td.location a {
-color: #c4622e;
-text-decoration: none;
-font-weight: 500;
-border-bottom: 1px dotted #e8864a;
-}
+td.location a { color: #c4622e; text-decoration: none; font-weight: 500; border-bottom: 1px dotted #e8864a; }
 td.location a:hover { color: #e8864a; border-bottom-color: transparent; }
-
-td.comments {
-color: #6a5848;
-font-size: 0.82rem;
-max-width: 260px;
-}
-
-.note {
-margin-top: 28px;
-font-family: 'Helvetica Neue', sans-serif;
-font-size: 0.8rem;
-color: #a08060;
-font-style: italic;
-text-align: center;
-}
-
-footer {
-text-align: center;
-padding: 24px;
-font-family: 'Helvetica Neue', sans-serif;
-font-size: 0.78rem;
-color: #b09070;
-border-top: 1px solid #edd8c0;
-}
-
+td.comments { color: #6a5848; font-size: 0.82rem; max-width: 260px; }
+.note { margin-top: 28px; font-family: 'Helvetica Neue', sans-serif; font-size: 0.8rem; color: #a08060; font-style: italic; text-align: center; }
+footer { text-align: center; padding: 24px; font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem; color: #b09070; border-top: 1px solid #edd8c0; }
 footer a { color: #c4622e; text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 </style>
@@ -212,37 +54,78 @@ footer a:hover { text-decoration: underline; }
 
 <header>
 <div class="subtitle">California Vipassana Centers</div>
-<h1>2026 Course Schedule</h1>
+<h1>Course Schedule</h1>
 <div class="tagline">Vipassana Meditation as taught by S.N. Goenka</div>
 </header>
 
-<div class="last-checked">Last updated: June 3, 2026 &nbsp;·&nbsp; Sources: <a href="https://www.dhamma.org/en-US/schedules/schvaddhana" style="color:#c4622e;">Dhamma Vaddhana</a> &nbsp;·&nbsp; <a href="https://www.dhamma.org/en-US/schedules/schmanda" style="color:#c4622e;">Dhamma Maṇḍa</a> &nbsp;·&nbsp; <a href="https://www.dhamma.org/en-US/schedules/schmahavana" style="color:#c4622e;">Dhamma Mahāvana</a></div>
+<div class="last-checked">Last updated: pending first auto-update &nbsp;·&nbsp; Sources:
+<a href="https://www.dhamma.org/en-US/schedules/schvaddhana" style="color:#c4622e;">Dhamma Vaddhana</a> &nbsp;·&nbsp;
+<a href="https://www.dhamma.org/en-US/schedules/schmanda" style="color:#c4622e;">Dhamma Maṇḍa</a> &nbsp;·&nbsp;
+<a href="https://www.dhamma.org/en-US/schedules/schmahavana" style="color:#c4622e;">Dhamma Mahāvana</a>
+</div>
 
 <main>
-
-<!-- ADULT COURSES -->
 <section>
 <div class="section-header">
-<h2>Ten-Day &amp; Other Adult Courses</h2>
-<span class="pill">Center</span>
+<h2>Upcoming Adult Courses</h2>
+<span class="pill">awaiting first run</span>
 </div>
 <div class="divider"></div>
 <div class="table-wrap">
-<table>
+<table id="schedule">
 <thead>
 <tr>
-<th>Course Date</th>
-<th>Type</th>
+<th class="sortable" data-key="date">Course Date</th>
+<th class="sortable" data-key="type">Type</th>
 <th>Status</th>
-<th>Location</th>
+<th class="sortable" data-key="location">Location</th>
 <th>Comments</th>
 </tr>
 </thead>
 <tbody>
+<tr><td colspan="5" style="text-align:center;padding:28px;color:#a08060;">
+Schedule will populate automatically on the 1st and 15th of each month at 5pm PT.
+Trigger the <em>Update Vipassana Schedule</em> workflow on GitHub to refresh now.
+</td></tr>
 </tbody>
 </table>
 </div>
+<p class="note">Excludes children's courses, Annual Board of Trustees meeting, and teacher self-course days.</p>
 </section>
 </main>
+
+<footer>
+Auto-updated on the 1st and 15th of each month at 5pm PT &middot;
+<a href="https://github.com/ankurwat/vipassana">source</a>
+</footer>
+
+<script>
+(function () {
+  const table = document.getElementById('schedule');
+  if (!table) return;
+  const tbody = table.tBodies[0];
+  const ths = table.querySelectorAll('th.sortable');
+  ths.forEach((th) => {
+    let asc = true;
+    th.addEventListener('click', () => {
+      ths.forEach(o => o.classList.remove('sort-asc','sort-desc'));
+      th.classList.add(asc ? 'sort-asc' : 'sort-desc');
+      const colIdx = Array.from(th.parentNode.children).indexOf(th);
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort((a, b) => {
+        const ca = a.children[colIdx];
+        const cb = b.children[colIdx];
+        const va = (ca.dataset.sort || ca.textContent || '').toLowerCase();
+        const vb = (cb.dataset.sort || cb.textContent || '').toLowerCase();
+        if (va < vb) return asc ? -1 : 1;
+        if (va > vb) return asc ? 1 : -1;
+        return 0;
+      });
+      rows.forEach(r => tbody.appendChild(r));
+      asc = !asc;
+    });
+  });
+})();
+</script>
 </body>
 </html>
