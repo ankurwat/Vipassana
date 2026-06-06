@@ -16,9 +16,9 @@ import requests
 from bs4 import BeautifulSoup
 
 CENTERS = [
-    ("Dhamma Vaddhana", "North Fork, CA", "https://www.dhamma.org/en-US/schedules/schvaddhana"),
-    ("Dhamma Maṇḍa",    "Cobb, CA",       "https://www.dhamma.org/en-US/schedules/schmanda"),
-    ("Dhamma Mahāvana", "Kelseyville, CA","https://www.dhamma.org/en-US/schedules/schmahavana"),
+    ("Dhamma Vaddhana", "Twentynine Palms, CA", "https://www.dhamma.org/en-US/schedules/schvaddhana"),
+    ("Dhamma Maṇḍa",    "Kelseyville, CA",      "https://www.dhamma.org/en-US/schedules/schmanda"),
+    ("Dhamma Mahāvana", "North Fork, CA",       "https://www.dhamma.org/en-US/schedules/schmahavana"),
 ]
 
 EXCLUDE_PATTERNS = [
