@@ -16,9 +16,9 @@ import requests
 from bs4 import BeautifulSoup
 
 CENTERS = [
-    ("Dhamma Vaddhana", "North Fork, CA", "https://www.dhamma.org/en-US/schedules/schvaddhana"),
-    ("Dhamma Maṇḍa",    "Cobb, CA",       "https://www.dhamma.org/en-US/schedules/schmanda"),
-    ("Dhamma Mahāvana", "Kelseyville, CA","https://www.dhamma.org/en-US/schedules/schmahavana"),
+    ("Dhamma Vaddhana", "Twentynine Palms, CA", "https://www.dhamma.org/en-US/schedules/schvaddhana"),
+    ("Dhamma Maṇḍa",    "Kelseyville, CA",      "https://www.dhamma.org/en-US/schedules/schmanda"),
+    ("Dhamma Mahāvana", "North Fork, CA",       "https://www.dhamma.org/en-US/schedules/schmahavana"),
 ]
 
 EXCLUDE_PATTERNS = [
@@ -101,40 +101,43 @@ def collapse_ws(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
+ACTION_WORDS = re.compile(r"^(apply|register|now|details|info|more|book|enroll|sign\s*up|view)\b", re.I)
+STATUS_WORDS = re.compile(r"open|wait|full|closed|progress|complete|future|not open", re.I)
+CITY_TOKENS = re.compile(r"\b(north fork|kelseyville|twentynine palms|cobb)\b", re.I)
+
+
 def parse_center(center_name: str, location: str, url: str, html_text: str) -> list[Course]:
     soup = BeautifulSoup(html_text, "html.parser")
     courses: list[Course] = []
     today = dt.date.today()
     year_hint = today.year
 
-    # Strategy: walk every <tr> on the page; rows with a date-looking cell are course rows.
     for tr in soup.find_all("tr"):
         cells = [collapse_ws(td.get_text(" ", strip=True)) for td in tr.find_all(["td", "th"])]
         if not cells or len(cells) < 2:
             continue
-        # Combine the cell text and look for a date-like token
         row_text = " | ".join(cells)
         if not DATE_RE.search(row_text):
             continue
-        # Heuristic: first cell with a date is the date column; first non-date cell is course type
+
         date_cell = next((c for c in cells if DATE_RE.search(c)), "")
-        non_date_cells = [c for c in cells if c and c != date_cell]
-        if not non_date_cells:
-            continue
-        course_type = non_date_cells[0]
-        # status: prefer a cell containing keywords
-        status_text = ""
-        for c in cells:
-            if re.search(r"open|wait|full|closed|progress|complete|future|not open", c, re.I):
-                status_text = c
-                break
-        if not status_text and len(non_date_cells) > 1:
-            status_text = non_date_cells[1]
-        comments = ""
-        # any leftover descriptive cell becomes a comment
-        extras = [c for c in non_date_cells[1:] if c != status_text]
-        if extras:
-            comments = " · ".join(extras)[:240]
+        status_cell = next((c for c in cells if STATUS_WORDS.search(c)), "")
+
+        # Course type: skip date, status, action-only cells. Prefer the descriptive cell.
+        candidates = [
+            c for c in cells
+            if c and c != date_cell and c != status_cell
+            and not ACTION_WORDS.match(c)
+            and not DATE_RE.search(c)
+        ]
+        course_type = candidates[0] if candidates else ""
+
+        # Comments: remaining descriptive cells, minus city tokens and the course type itself.
+        leftovers = [c for c in candidates[1:] if c]
+        comments = " · ".join(leftovers)
+        comments = CITY_TOKENS.sub("", comments)
+        comments = re.sub(r"\s*·\s*·\s*", " · ", comments).strip(" ·")
+        comments = comments[:240]
 
         if excluded(course_type) or excluded(row_text):
             continue
@@ -146,8 +149,8 @@ def parse_center(center_name: str, location: str, url: str, html_text: str) -> l
             start=start,
             date_text=date_cell,
             course_type=course_type,
-            status=status_text or "—",
-            status_class=classify_status(status_text),
+            status=status_cell or "—",
+            status_class=classify_status(status_cell),
             location=location + f" ({center_name})",
             location_url=url,
             comments=comments,
@@ -168,10 +171,10 @@ def render_rows(courses: list[Course]) -> str:
         out.append(
             "<tr>"
             f'<td class="date" data-sort="{start_iso}">{html.escape(c.date_text)}</td>'
-            f'<td class="type" data-sort="{html.escape(c.course_type.lower())}">{html.escape(c.course_type)}</td>'
-            f'<td class="status"><span class="badge badge-{c.status_class}">{html.escape(c.status)}</span></td>'
             f'<td class="location" data-sort="{html.escape(c.location.lower())}">'
             f'<a href="{html.escape(c.location_url)}" target="_blank" rel="noopener">{html.escape(c.location)}</a></td>'
+            f'<td class="type" data-sort="{html.escape(c.course_type.lower())}">{html.escape(c.course_type)}</td>'
+            f'<td class="status"><span class="badge badge-{c.status_class}">{html.escape(c.status)}</span></td>'
             f'<td class="comments">{html.escape(c.comments)}</td>'
             "</tr>"
         )
@@ -259,9 +262,9 @@ footer a:hover { text-decoration: underline; }
 <thead>
 <tr>
 <th class="sortable" data-key="date">Course Date</th>
-<th class="sortable" data-key="type">Type</th>
-<th>Status</th>
 <th class="sortable" data-key="location">Location</th>
+<th class="sortable" data-key="type">Course Type</th>
+<th>Status</th>
 <th>Comments</th>
 </tr>
 </thead>
