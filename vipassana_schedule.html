@@ -17,6 +17,12 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 64px; }
 .section-header h2 { font-size: 1.2rem; font-weight: normal; color: #c4622e; letter-spacing: 0.01em; }
 .section-header .pill { background: #e8864a; color: white; font-family: 'Helvetica Neue', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
 .divider { height: 1px; background: linear-gradient(to right, #e8864a44, transparent); margin-bottom: 20px; }
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-bottom: 18px; font-family: 'Helvetica Neue', sans-serif; font-size: 0.85rem; color: #5a4a3a; }
+.filters label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.filters select { font-family: inherit; font-size: 0.85rem; padding: 6px 10px; border: 1px solid #e8864a; border-radius: 6px; background: #fff8f2; color: #3a2e24; cursor: pointer; }
+.filters select:focus { outline: 2px solid #e8864a44; }
+.filters input[type=checkbox] { accent-color: #e8864a; width: 16px; height: 16px; }
+.filters .count { margin-left: auto; color: #a08060; font-style: italic; }
 .table-wrap { overflow-x: auto; border-radius: 10px; box-shadow: 0 2px 16px rgba(200,100,40,0.08); }
 table { width: 100%; border-collapse: collapse; background: white; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.875rem; table-layout: fixed; }
 thead tr { background: #3a2e24; color: #f5dfc8; }
@@ -73,6 +79,18 @@ footer a:hover { text-decoration: underline; }
 <span class="pill">96 courses</span>
 </div>
 <div class="divider"></div>
+<div class="filters">
+<label>Location
+<select id="filter-location">
+<option value="all">All</option>
+<option value="twentynine palms">Twentynine Palms</option>
+<option value="kelseyville">Kelseyville</option>
+<option value="north fork">North Fork</option>
+</select>
+</label>
+<label><input type="checkbox" id="hide-10day" checked> Hide 10-day</label>
+<span class="count" id="row-count"></span>
+</div>
 <div class="table-wrap">
 <table id="schedule">
 <thead>
@@ -199,6 +217,31 @@ Auto-updated on the 1st and 15th of each month at 5pm PT &middot;
   if (!table) return;
   const tbody = table.tBodies[0];
   const allTh = table.querySelectorAll('thead th');
+  const locSel = document.getElementById('filter-location');
+  const hide10 = document.getElementById('hide-10day');
+  const countEl = document.getElementById('row-count');
+
+  function applyFilters() {
+    const loc = locSel ? locSel.value : 'all';
+    const drop10 = hide10 ? hide10.checked : false;
+    let shown = 0, total = 0;
+    tbody.querySelectorAll('tr').forEach(tr => {
+      total++;
+      const locCell = tr.children[1];
+      const typeCell = tr.children[2];
+      const locTxt = (locCell && (locCell.dataset.sort || locCell.textContent || '')).toLowerCase();
+      const typeTxt = (typeCell && (typeCell.dataset.sort || typeCell.textContent || '')).toLowerCase();
+      const locOk = loc === 'all' || locTxt.includes(loc);
+      const tenOk = !drop10 || !/\b10[- ]?day\b/.test(typeTxt);
+      const show = locOk && tenOk;
+      tr.style.display = show ? '' : 'none';
+      if (show) shown++;
+    });
+    if (countEl) countEl.textContent = `Showing ${shown} of ${total}`;
+  }
+  if (locSel) locSel.addEventListener('change', applyFilters);
+  if (hide10) hide10.addEventListener('change', applyFilters);
+  applyFilters();
 
   table.querySelectorAll('th.sortable').forEach((th) => {
     let asc = true;
