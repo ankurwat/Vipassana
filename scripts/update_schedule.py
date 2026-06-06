@@ -86,7 +86,6 @@ def parse_start_date(text: str, year_hint: int) -> dt.date | None:
             return dt.datetime.strptime(snippet.strip()[:len(f"Xxx 99 {year_hint}")], fmt).date()
         except ValueError:
             pass
-    # fallback: parse just month+day, attach year hint
     m2 = re.match(r"([A-Za-z]+)\s+(\d{1,2})", snippet.strip())
     if m2:
         for fmt in ("%b %d", "%B %d"):
@@ -199,14 +198,17 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 64px; }
 .section-header .pill { background: #e8864a; color: white; font-family: 'Helvetica Neue', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
 .divider { height: 1px; background: linear-gradient(to right, #e8864a44, transparent); margin-bottom: 20px; }
 .table-wrap { overflow-x: auto; border-radius: 10px; box-shadow: 0 2px 16px rgba(200,100,40,0.08); }
-table { width: 100%; border-collapse: collapse; background: white; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.875rem; }
+table { width: 100%; border-collapse: collapse; background: white; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.875rem; table-layout: fixed; }
 thead tr { background: #3a2e24; color: #f5dfc8; }
-thead th { padding: 13px 16px; text-align: left; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+thead th { position: relative; padding: 13px 16px; text-align: left; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 thead th.sortable { cursor: pointer; user-select: none; }
 thead th.sortable:hover { background: #4a3a2c; }
 thead th.sortable::after { content: ' \\2195'; opacity: 0.45; font-size: 0.9em; }
 thead th.sort-asc::after  { content: ' \\25B2'; opacity: 1; color: #e8864a; }
 thead th.sort-desc::after { content: ' \\25BC'; opacity: 1; color: #e8864a; }
+thead th .resizer { position: absolute; top: 0; right: 0; width: 6px; height: 100%; cursor: col-resize; user-select: none; background: transparent; }
+thead th .resizer:hover, thead th .resizer.active { background: #e8864a; }
+td { overflow: hidden; text-overflow: ellipsis; }
 tbody tr { border-bottom: 1px solid #f0e6da; transition: background 0.15s; }
 tbody tr:last-child { border-bottom: none; }
 tbody tr:hover { background: #fff8f2; }
@@ -282,11 +284,14 @@ Auto-updated on the 1st and 15th of each month at 5pm PT &middot;
   const table = document.getElementById('schedule');
   if (!table) return;
   const tbody = table.tBodies[0];
-  const ths = table.querySelectorAll('th.sortable');
-  ths.forEach((th, idx) => {
+  const allTh = table.querySelectorAll('thead th');
+
+  // Sorting
+  table.querySelectorAll('th.sortable').forEach((th) => {
     let asc = true;
-    th.addEventListener('click', () => {
-      ths.forEach(o => o.classList.remove('sort-asc','sort-desc'));
+    th.addEventListener('click', (e) => {
+      if (e.target.classList.contains('resizer')) return;
+      table.querySelectorAll('th.sortable').forEach(o => o.classList.remove('sort-asc','sort-desc'));
       th.classList.add(asc ? 'sort-asc' : 'sort-desc');
       const colIdx = Array.from(th.parentNode.children).indexOf(th);
       const rows = Array.from(tbody.querySelectorAll('tr'));
@@ -301,6 +306,31 @@ Auto-updated on the 1st and 15th of each month at 5pm PT &middot;
       });
       rows.forEach(r => tbody.appendChild(r));
       asc = !asc;
+    });
+  });
+
+  // Column resizing
+  allTh.forEach((th, idx) => {
+    if (idx === allTh.length - 1) return;
+    const grip = document.createElement('span');
+    grip.className = 'resizer';
+    th.appendChild(grip);
+    grip.addEventListener('mousedown', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      grip.classList.add('active');
+      const startX = e.pageX;
+      const startW = th.offsetWidth;
+      const onMove = (ev) => {
+        const w = Math.max(60, startW + (ev.pageX - startX));
+        th.style.width = w + 'px';
+      };
+      const onUp = () => {
+        grip.classList.remove('active');
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
     });
   });
 })();
