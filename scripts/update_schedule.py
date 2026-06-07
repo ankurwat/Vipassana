@@ -164,13 +164,42 @@ def fetch(url: str) -> str:
     return r.text
 
 
+def date_range_length(text: str) -> int:
+    """Days spanned by the rendered date string. Single date -> 1."""
+    parts = re.split(r"[-–—]| to ", text)
+    parts = [p.strip() for p in parts if p.strip()]
+    if len(parts) < 2:
+        return 1
+    today = dt.date.today()
+    s = _quick_date(parts[0], today.year)
+    e = _quick_date(parts[1], today.year)
+    if not s or not e:
+        return 1
+    if e < s:  # month rollover with year wrap
+        e = e.replace(year=e.year + 1)
+    return max(1, (e - s).days)
+
+
+def _quick_date(s: str, year_hint: int) -> dt.date | None:
+    s = re.sub(r"[,.]", "", s).strip()
+    for fmt in ("%b %d %Y", "%B %d %Y", "%b %d", "%B %d"):
+        try:
+            d = dt.datetime.strptime(s, fmt).date()
+            return d if "%Y" in fmt else d.replace(year=year_hint)
+        except ValueError:
+            pass
+    return None
+
+
 def render_rows(courses: list[Course]) -> str:
     out = []
     for c in courses:
         start_iso = c.start.isoformat() if c.start else "9999-12-31"
+        length = date_range_length(c.date_text)
         out.append(
             "<tr>"
             f'<td class="date" data-sort="{start_iso}">{html.escape(c.date_text)}</td>'
+            f'<td class="length" data-sort="{length:03d}">{length} day{"s" if length != 1 else ""}</td>'
             f'<td class="location" data-sort="{html.escape(c.location.lower())}">'
             f'<a href="{html.escape(c.location_url)}" target="_blank" rel="noopener">{html.escape(c.location)}</a></td>'
             f'<td class="type" data-sort="{html.escape(c.course_type.lower())}">{html.escape(c.course_type)}</td>'
@@ -202,10 +231,14 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 64px; }
 .divider { height: 1px; background: linear-gradient(to right, #e8864a44, transparent); margin-bottom: 20px; }
 .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-bottom: 18px; font-family: 'Helvetica Neue', sans-serif; font-size: 0.85rem; color: #5a4a3a; }
 .filters label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
-.filters select { font-family: inherit; font-size: 0.85rem; padding: 6px 10px; border: 1px solid #e8864a; border-radius: 6px; background: #fff8f2; color: #3a2e24; cursor: pointer; }
-.filters select:focus { outline: 2px solid #e8864a44; }
 .filters input[type=checkbox] { accent-color: #e8864a; width: 16px; height: 16px; }
 .filters .count { margin-left: auto; color: #a08060; font-style: italic; }
+.tabs { display: inline-flex; border: 1px solid #e8864a; border-radius: 6px; overflow: hidden; }
+.tabs button { font-family: inherit; font-size: 0.85rem; padding: 7px 18px; background: #fff8f2; color: #c4622e; border: 0; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.tabs button + button { border-left: 1px solid #e8864a; }
+.tabs button.active { background: #e8864a; color: white; }
+.tabs button:hover:not(.active) { background: #ffe5d2; }
+td.length { white-space: nowrap; min-width: 70px; color: #5a4a3a; }
 .table-wrap { overflow-x: auto; border-radius: 10px; box-shadow: 0 2px 16px rgba(200,100,40,0.08); }
 table { width: 100%; border-collapse: collapse; background: white; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.875rem; table-layout: fixed; }
 thead tr { background: #3a2e24; color: #f5dfc8; }
@@ -264,14 +297,10 @@ footer a:hover { text-decoration: underline; }
 </div>
 <div class="divider"></div>
 <div class="filters">
-<label>Location
-<select id="filter-location">
-<option value="all">All</option>
-<option value="twentynine palms">Twentynine Palms</option>
-<option value="kelseyville">Kelseyville</option>
-<option value="north fork">North Fork</option>
-</select>
-</label>
+<div class="tabs" id="region-tabs" role="tablist">
+<button type="button" data-region="socal" role="tab">SoCal</button>
+<button type="button" data-region="norcal" role="tab" class="active">NorCal</button>
+</div>
 <label><input type="checkbox" id="hide-10day" checked> Hide 10-day</label>
 <span class="count" id="row-count"></span>
 </div>
@@ -280,6 +309,7 @@ footer a:hover { text-decoration: underline; }
 <thead>
 <tr>
 <th class="sortable" data-key="date">Course Date</th>
+<th class="sortable" data-key="length">Length</th>
 <th class="sortable" data-key="location">Location</th>
 <th class="sortable" data-key="type">Course Type</th>
 <th>Status</th>
@@ -306,21 +336,26 @@ Auto-updated on the 1st and 15th of each month at 5pm PT &middot;
   if (!table) return;
   const tbody = table.tBodies[0];
   const allTh = table.querySelectorAll('thead th');
-  const locSel = document.getElementById('filter-location');
+  const tabs = document.querySelectorAll('#region-tabs button');
   const hide10 = document.getElementById('hide-10day');
   const countEl = document.getElementById('row-count');
+  const REGION_CITIES = {
+    socal: ['twentynine palms'],
+    norcal: ['kelseyville', 'north fork'],
+  };
+  let region = 'norcal';
 
   function applyFilters() {
-    const loc = locSel ? locSel.value : 'all';
+    const cities = REGION_CITIES[region] || [];
     const drop10 = hide10 ? hide10.checked : false;
     let shown = 0, total = 0;
     tbody.querySelectorAll('tr').forEach(tr => {
       total++;
-      const locCell = tr.children[1];
-      const typeCell = tr.children[2];
+      const locCell = tr.children[2];
+      const typeCell = tr.children[3];
       const locTxt = (locCell && (locCell.dataset.sort || locCell.textContent || '')).toLowerCase();
       const typeTxt = (typeCell && (typeCell.dataset.sort || typeCell.textContent || '')).toLowerCase();
-      const locOk = loc === 'all' || locTxt.includes(loc);
+      const locOk = cities.some(c => locTxt.includes(c));
       const tenOk = !drop10 || !/\\b10[- ]?day\\b/.test(typeTxt);
       const show = locOk && tenOk;
       tr.style.display = show ? '' : 'none';
@@ -328,7 +363,11 @@ Auto-updated on the 1st and 15th of each month at 5pm PT &middot;
     });
     if (countEl) countEl.textContent = `Showing ${shown} of ${total}`;
   }
-  if (locSel) locSel.addEventListener('change', applyFilters);
+  tabs.forEach(btn => btn.addEventListener('click', () => {
+    region = btn.dataset.region;
+    tabs.forEach(b => b.classList.toggle('active', b === btn));
+    applyFilters();
+  }));
   if (hide10) hide10.addEventListener('change', applyFilters);
   applyFilters();
 
