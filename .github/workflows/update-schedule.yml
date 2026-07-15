@@ -23,17 +23,25 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4
+        run: pip install requests beautifulsoup4 google-api-python-client google-auth
 
       - name: Run scraper
         run: python scripts/update_schedule.py
+
+      - name: Sync one-day Twentynine Palms courses to Google Calendar
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
+        run: python scripts/sync_calendar.py
 
       - name: Commit & push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [[ -n "$(git status --porcelain vipassana_schedule.html)" ]]; then
-            git add vipassana_schedule.html
+          if [[ -n "$(git status --porcelain vipassana_schedule.html scripts/known_courses.json)" ]]; then
+            git add vipassana_schedule.html scripts/known_courses.json
             git commit -m "Update Vipassana schedule ($(date -u +%Y-%m-%d))"
             git push
           else
